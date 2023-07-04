@@ -5,7 +5,6 @@ const router = express.Router();
 
 router.post(
   '/signup',
-  upload.single('profileImgUrl'),
   validationMiddleware.createUserValidation,
   authController.signup
 );
