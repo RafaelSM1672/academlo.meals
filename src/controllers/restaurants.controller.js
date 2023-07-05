@@ -1,8 +1,5 @@
-const AppError = require('../utils/appError');
-const catchAsync = require('./../utils/catchAsync');
-const generateJWT = require('./../utils/jwt');
-
 const Restaurant = require('../models/restaurants.model');
+const catchAsync = require('./../utils/catchAsync');
 
 exports.createRestaurant = catchAsync(async (req, res, next) => {
   const { name, address, rating } = req.body;

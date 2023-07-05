@@ -11,9 +11,13 @@ const router = express.Router();
 
 router.use(authMiddleware.protect);
 
-router.post('/', orderController.createOrder);
+router.post('/', orderMiddleware.validOrder, orderController.createOrder);
 
-router.get('/me', orderController.findOrders);
+router.get(
+  '/me',
+  authMiddleware.protectAccountOwner,
+  orderController.findOrders
+);
 
 router
   .route('/:id')

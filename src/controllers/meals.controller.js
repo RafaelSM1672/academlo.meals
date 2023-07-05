@@ -1,15 +1,16 @@
-const AppError = require('../utils/appError');
-const catchAsync = require('./../utils/catchAsync');
-const generateJWT = require('./../utils/jwt');
-
 const Meal = require('../models/meals.model');
+const catchAsync = require('./../utils/catchAsync');
 
 exports.createMeal = catchAsync(async (req, res, next) => {
   const { name, price } = req.body;
+  const { id } = req.params;
+  const uid = req.sessionUser.id;
 
   const meal = await Meal.create({
     name: name.toLowerCase(),
     price,
+    restaurantId: +id,
+    userId: +uid,
   });
 
   res.status(200).json({
@@ -50,17 +51,16 @@ exports.findMeals = catchAsync(async (req, res) => {
     where: {
       status: true,
     },
-
     include: [
       {
-        model: Meal,
+        model: Restaurant,
       },
     ],
   });
 
   res.json({
     results: meals.length,
-    message: ' Meals find',
+    message: 'Meals find',
     meals,
   });
 });
@@ -73,6 +73,11 @@ exports.findMeal = catchAsync(async (req, res) => {
       id,
       status: true,
     },
+    include: [
+      {
+        model: Restaurant,
+      },
+    ],
   });
 
   if (!meal) {

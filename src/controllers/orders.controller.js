@@ -1,8 +1,5 @@
-const AppError = require('../utils/appError');
-const catchAsync = require('./../utils/catchAsync');
-const generateJWT = require('./../utils/jwt');
-
 const Order = require('../models/orders.model');
+const catchAsync = require('./../utils/catchAsync');
 
 exports.createOrder = catchAsync(async (req, res, next) => {
   const { quantity, mealId } = req.body;
@@ -52,7 +49,8 @@ exports.findOrders = catchAsync(async (req, res) => {
 
     include: [
       {
-        model: Order,
+        model: Meal,
+        model: Restaurant,
       },
     ],
   });
@@ -73,6 +71,12 @@ exports.findOrder = catchAsync(async (req, res) => {
       id,
       status: 'active',
     },
+    include: [
+      {
+        model: Meal,
+        model: Restaurant,
+      },
+    ],
   });
 
   if (!order) {

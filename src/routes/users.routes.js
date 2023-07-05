@@ -40,7 +40,7 @@ router.get(
   orderMiddleware.validOrder,
   userMiddleware.validUser,
   authMiddleware.protectAccountOwner,
-  userController.findOrders
+  orderController.findOrders
 );
 
 router.get(
@@ -48,7 +48,7 @@ router.get(
   orderMiddleware.validOrder,
   userMiddleware.validUser,
   authMiddleware.protectAccountOwner,
-  userController.findOrder
+  orderController.findOrder
 );
 
 module.exports = router;
