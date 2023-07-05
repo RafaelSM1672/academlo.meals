@@ -2,11 +2,13 @@ const express = require('express');
 
 //controllers
 const userController = require('./../controllers/users.controller');
+const orderController = require('./../controllers/orders.controller');
 
 //middlewares
 const validationMiddleware = require('./../middlewares/validations.middleware');
 const userMiddleware = require('./../middlewares/users.middleware');
 const authMiddleware = require('./../middlewares/auth.middleware');
+const orderMiddleware = require('./../middlewares/orders.middleware');
 
 const router = express.Router();
 
@@ -20,16 +22,33 @@ router.post('/login', userController.login);
 
 router.use(authMiddleware.protect);
 
-/* router.get('/renew', authController.renew); */
-
 router
-  .use('/:id', userMiddleware.validUser)
   .route('/:id')
-  .patch(authMiddleware.protectAccountOwner, userController.updateUser)
-  .delete(authMiddleware.protectAccountOwner, userController.deleteUser);
+  .patch(
+    userMiddleware.validUser,
+    authMiddleware.protectAccountOwner,
+    userController.updateUser
+  )
+  .delete(
+    userMiddleware.validUser,
+    authMiddleware.protectAccountOwner,
+    userController.deleteUser
+  );
 
-router.get('/orders', userController.findOrders);
+router.get(
+  '/orders',
+  orderMiddleware.validOrder,
+  userMiddleware.validUser,
+  authMiddleware.protectAccountOwner,
+  userController.findOrders
+);
 
-router.get('/orders/:id', userController.findOrder);
+router.get(
+  '/orders/:id',
+  orderMiddleware.validOrder,
+  userMiddleware.validUser,
+  authMiddleware.protectAccountOwner,
+  userController.findOrder
+);
 
 module.exports = router;

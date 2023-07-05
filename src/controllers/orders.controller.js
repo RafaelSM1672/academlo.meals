@@ -63,3 +63,28 @@ exports.findOrders = catchAsync(async (req, res) => {
     orders,
   });
 });
+
+exports.findOrder = catchAsync(async (req, res) => {
+  const { id } = req.params;
+  const { status } = req.body;
+
+  const order = await Order.findOne({
+    where: {
+      id,
+      status: 'active',
+    },
+  });
+
+  if (!order) {
+    return res.status(404).json({
+      status: 'error',
+      message: `The order whith id: ${id} not found!`,
+    });
+  }
+
+  res.json({
+    message: `Order #${id} found`,
+    order,
+    status,
+  });
+});

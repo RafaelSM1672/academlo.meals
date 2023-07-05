@@ -3,17 +3,17 @@ const AppError = require('../utils/appError');
 const catchAsync = require('../utils/catchAsync');
 
 exports.validUser = catchAsync(async (req, res, next) => {
-  const { id } = req.params;
+  const { id, userId } = req.params;
 
   const user = await User.findOne({
     where: {
-      id,
       status: true,
+      id: userId || id,
     },
   });
 
   if (!user) {
-    return next(new AppError(`User with id: ${id} not found`, 404));
+    return next(new AppError(`User with id: ${userId || id} not found`, 404));
   }
 
   req.user = user;

@@ -5,6 +5,7 @@ const restaurantController = require('./../controllers/restaurants.controller');
 const reviewController = require('./../controllers/reviews.controller');
 
 //middlewares
+const validationMiddleware = require('./../middlewares/validations.middleware');
 const authMiddleware = require('./../middlewares/auth.middleware');
 const restaurantMiddleware = require('./../middlewares/restaurants.middleware');
 const reviewMiddleware = require('./../middlewares/reviews.middleware');
@@ -17,6 +18,7 @@ router
   .post(
     authMiddleware.protect,
     authMiddleware.restrictTo('admin'),
+    validationMiddleware.restaurantValidation,
     restaurantController.createRestaurant
   );
 

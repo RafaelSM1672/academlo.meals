@@ -13,6 +13,7 @@ const globalErrorHandler = require('./controllers/error.controller');
 const userRouter = require('./routes/users.routes');
 const restaurantRouter = require('./routes/restaurants.routes');
 const mealRouter = require('./routes/meals.routes');
+const orderRouter = require('./routes/orders.routes');
 
 const app = express();
 const limiter = rateLimit({
@@ -45,6 +46,7 @@ app.use('/api/v1', limiter);
 app.use('/api/v1/users', userRouter);
 app.use('/api/v1/restaurants', restaurantRouter);
 app.use('/api/v1/meals', mealRouter);
+app.use('/api/v1/orders', orderRouter);
 
 app.all('*', (req, res, next) => {
   return next(

@@ -37,3 +37,24 @@ exports.createValidation = [
     .withMessage('Role must be either "normal" or "admin"'),
   validFields,
 ];
+
+exports.restaurantValidation = [
+  body('name').notEmpty().withMessage('Name cannot be empty'),
+  body('address').notEmpty().withMessage('Address cannot be empty'),
+  body('rating')
+    .notEmpty()
+    .withMessage('Rating is required')
+    .isInt({ min: 1, max: 5 })
+    .withMessage('Rating must be an integer between 1 and 5'),
+  validFields,
+];
+
+exports.mealValidation = [
+  body('name').notEmpty().withMessage('Name cannot be empty'),
+  body('price')
+    .notEmpty()
+    .withMessage('Price cannot be empty')
+    .isFloat()
+    .withMessage('Price must be a number'),
+  validFields,
+];
