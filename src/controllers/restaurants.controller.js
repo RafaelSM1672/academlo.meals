@@ -52,18 +52,13 @@ exports.findRestaurants = catchAsync(async (req, res) => {
     where: {
       status: true,
     },
-
-    include: [
-      {
-        model: Restaurant,
-      },
-    ],
   });
 
-  res.json({
-    results: restaurants.length,
+  return res.status(200).json({
+    status: 'success',
     message: 'Restaurants find',
-    orders,
+    results: restaurants.length,
+    restaurants,
   });
 });
 
@@ -87,65 +82,5 @@ exports.findRestaurant = catchAsync(async (req, res) => {
   res.json({
     message: `Restaurant #${id} found`,
     restaurant,
-  });
-});
-
-exports.createReview = catchAsync(async (req, res, next) => {
-  const { name, address, rating } = req.body;
-
-  const restaurant = await User.create({
-    name: name.toLowerCase(),
-    address: address.toLowerCase(),
-    rating,
-  });
-
-  res.status(200).json({
-    status: 'success',
-    message: 'The restaurant has been created successfully',
-    restaurant: {
-      name: restaurant.name,
-      address: restaurant.address,
-      rating: restaurant.rating,
-    },
-  });
-});
-
-exports.editReview = catchAsync(async (req, res, next) => {
-  const { name, address, rating } = req.body;
-
-  const restaurant = await User.create({
-    name: name.toLowerCase(),
-    address: address.toLowerCase(),
-    rating,
-  });
-
-  res.status(200).json({
-    status: 'success',
-    message: 'The restaurant has been created successfully',
-    restaurant: {
-      name: restaurant.name,
-      address: restaurant.address,
-      rating: restaurant.rating,
-    },
-  });
-});
-
-exports.deleteReview = catchAsync(async (req, res, next) => {
-  const { name, address, rating } = req.body;
-
-  const restaurant = await User.create({
-    name: name.toLowerCase(),
-    address: address.toLowerCase(),
-    rating,
-  });
-
-  res.status(200).json({
-    status: 'success',
-    message: 'The restaurant has been created successfully',
-    restaurant: {
-      name: restaurant.name,
-      address: restaurant.address,
-      rating: restaurant.rating,
-    },
   });
 });
