@@ -41,7 +41,7 @@ exports.login = catchAsync(async (req, res, next) => {
   const user = await User.findOne({
     where: {
       email: email.toLowerCase(),
-      status: 'active',
+      status: true,
     },
   });
 
@@ -75,5 +75,73 @@ exports.login = catchAsync(async (req, res, next) => {
       email: user.email,
       role: user.role,
     },
+  });
+});
+
+exports.updateUser = catchAsync(async (req, res, next) => {
+  const { name, email } = req.body;
+  const { user } = req;
+
+  await user.update({ name, email });
+
+  res.status(200).json({
+    status: 'success',
+    message: 'User has been updated!',
+  });
+});
+
+exports.deleteUser = catchAsync(async (req, res, next) => {
+  const { user } = req;
+
+  await user.update({ status: false });
+
+  res.status(200).json({
+    status: 'success',
+    message: 'User has been deleted',
+  });
+});
+
+exports.findOrders = catchAsync(async (req, res) => {
+  const orders = await Order.findAll({
+    where: {
+      status: 'active',
+    },
+
+    include: [
+      {
+        model: Order,
+      },
+    ],
+  });
+
+  res.json({
+    results: repairs.length,
+    message: 'Orders find',
+    orders,
+  });
+});
+
+exports.findOrder = catchAsync(async (req, res) => {
+  const { id } = req.params;
+  const { status } = req.body;
+
+  const order = await Order.findOne({
+    where: {
+      id,
+      status: 'active',
+    },
+  });
+
+  if (!order) {
+    return res.status(404).json({
+      status: 'error',
+      message: `The order whith id: ${id} not found!`,
+    });
+  }
+
+  res.json({
+    message: `Order #${id} found`,
+    order,
+    status,
   });
 });
